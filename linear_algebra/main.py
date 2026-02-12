@@ -32,7 +32,7 @@ def vecs_visualize(vectors: list[np.ndarray], colors: list[str]) -> None:
     plt.xlim(-limit, limit)
     plt.ylim(-limit, limit)
     plt.legend(fontsize='x-small')
-    plt.title("Rotated Vector")
+    plt.title("Vector")
     
     plt.show()
 
@@ -79,6 +79,48 @@ def vecs_addition(vectors: list[np.ndarray], colors: list[str]) -> None:
     plt.legend(fontsize='x-small')
     plt.title("Vector Addition")
     
+    plt.show()
+    
+def vecs_visualize_3d(vectors, colors, labels):
+    """
+    Memvisualisasikan list vektor 3D ke dalam ruang Cartesian 3D.
+    """
+    fig = plt.figure(figsize=(8, 8))
+    # INI KUNCINYA: Projection '3d'
+    ax = fig.add_subplot(111, projection='3d')
+
+    # Origin selalu (0,0,0)
+    origin = np.array([0, 0, 0])
+
+    for i, vec in enumerate(vectors):
+        # Quiver 3D butuh 6 argumen: x, y, z (asal), u, v, w (arah)
+        ax.quiver(
+            origin[0], origin[1], origin[2], # Titik Asal
+            vec[0], vec[1], vec[2],          # Arah Vector
+            color=colors[i], 
+            label=labels[i],
+            arrow_length_ratio=0.1,          # Agar panah tidak terlalu gemuk
+            linewidth=2
+        )
+
+    # Setting Limit agar visualisasi tidak "zoom in" terlalu dekat
+    limit = np.max(np.abs(vectors)) + 2
+    ax.set_xlim([-limit, limit])
+    ax.set_ylim([-limit, limit])
+    ax.set_zlim([-limit, limit])
+
+    # Label Sumbu (Penting di 3D biar tidak tersesat)
+    ax.set_xlabel('X Axis')
+    ax.set_ylabel('Y Axis')
+    ax.set_zlabel('Z Axis')
+    
+    # Menambah garis bantu sumbu
+    ax.plot([-limit, limit], [0, 0], [0, 0], 'k--', alpha=0.2) # Sumbu X
+    ax.plot([0, 0], [-limit, limit], [0, 0], 'k--', alpha=0.2) # Sumbu Y
+    ax.plot([0, 0], [0, 0], [-limit, limit], 'k--', alpha=0.2) # Sumbu Z
+
+    plt.title("Vector 3d")
+    plt.legend()
     plt.show()
 
 def show_image(img):
